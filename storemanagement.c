@@ -18,9 +18,12 @@ extern int balance;
 
 void registerProduct(struct Product*); 
 void receiving(struct Product*, int); // adding product 
-void checkProduct(); // print how many product do they have
+void searchMenu(struct Product*); // search product  
+void searchByName(struct Product*);
+void searchByID(struct Product*);
+void checkProduct(struct Product*); // print how many product do they have
 void checkExDate(); // check Expirement date
-void searchProduct(); // search product  
+
 
 int main()
 {
@@ -43,26 +46,32 @@ int main()
 		scanf("%d", &menu);
 
 		switch(menu)
-		{	// Register product
+		{	
+			// Register product
 			case 1:
 				registerProduct(ptr_stock);
 				break;
+			
 			// Product Receiving
 			case 2:
 				receiving(ptr_stock, balance);
 				break;
+			
 			// Search
 			case 3:
-
+				
 				break;
+		
 			// Show all product 
 			case 4:
-
+				checkProduct(ptr_stock);
 				break;
+			
 			// Check expiry date
 			case 5:
 				
 				break;
+			
 			case 6:
 
 				break;
@@ -125,7 +134,7 @@ void receiving(struct Product *ptr, int balance)
 		printf("Which product do you want to add?");
 		fgets(target, strlen(target), stdin);
 	
-		//find target item and add stock
+		// add stock & pay
 		for(int i = 0; i < 50; ++i)
 		{
 			if(!strcmp(ptr->pName, target))
@@ -146,19 +155,80 @@ void receiving(struct Product *ptr, int balance)
 	}
 
 }
-/*
-void checkProduct()
-{
+
+void searchMenu(struct Product* ptr) {
+	int smenu = 0; // search menu
+
+	printf("1. Search by name \n");
+	printf("2. Search by product ID. \n\n");
+	
+	printf("Press number(0 to quit): ");
+	scanf("%d", &smenu);
+	
+	while (smenu != 0) {
+		switch (smenu)
+		{
+			case 1:
+				searchByName(ptr);
+				break;
+			case 2:
+				searchByID(ptr);
+				break;
+			default:
+				break;
+		}
+	}
 
 }
 
+void searchByName(struct Product* ptr) {
+	char sName[30] = { '/0', };
+
+	printf("Product name : ");
+	fgets(sName, strlen(sName), stdin);
+
+	for (int i = 0; i < 50; ++i) {
+		if (!strcmp(sName, ptr[i]->pName)) {
+			printf("%s", ptr[i]->pName);
+			printf("This product made from %s", ptr[i]->pMaker);
+			printf("price: %d \n", ptr[i]->product_price);
+			printf("Expiry Date: %s", ptr[i]->exDate);
+			printf("Now available %d ea", ptr[i]->stock_count);
+			break;
+		}
+	}
+}
+
+void searchByID(struct Product* ptr) {
+	int sID = 0;
+
+	printf("Product ID : ");
+	scanf("%d", &sID);
+
+	for (int i = 0; i < 50; ++i) {
+		if (sID == ptr[i]->pID) {
+			printf("%s", ptr[i]->pName);
+			printf("This product made from %s", ptr[i]->pMaker);
+			printf("price: %d \n", ptr[i]->product_price);
+			printf("Expiry Date: %s", ptr[i]->exDate);
+			printf("Now available %d ea", ptr[i]->stock_count);
+			break;
+		}
+	}
+}
+
+void checkProduct(struct Product *ptr)
+{
+	for (int i = 0; i < 50; ++i) {
+		printf("%s : ", ptr->pName);
+		for (int j = 0; j < ptr->stock_count; ++j) {
+			printf("*");
+		}
+		printf("\n");
+	}
+}
+/*
 void checkEpDate()
 {
 
 }
-
-void searchProduct()  
-{
-
-}
-*/
