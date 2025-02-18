@@ -2,8 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "pos.c"
+#include "stock.h"
 
+/*
 struct Product{
 	int pID;
 	char pName[30]; // product's name
@@ -13,24 +14,26 @@ struct Product{
 	int product_price; // price
 	int stock_count; // stock count
 };
+*/
 
-extern int balance;
+int balance = 1234000;
+struct Product stock[50] = { 0, '0', '0', '0', false, 0, 0};
+struct Product *ptr_stock = stock;
+
 
 void registerProduct(struct Product*); 
 void receiving(struct Product*, int); // adding product 
 void searchMenu(struct Product*); // search product  
 void searchByName(struct Product*);
 void searchByID(struct Product*);
-void checkProduct(struct Product*); // print how many product do they have
-void checkExDate(); // check Expirement date
-
+void countStock(struct Product*); // print how many product do they have
 
 int main()
 {
 	struct Product stock[50] = { 0, '0', '0', '0', false, 0, 0};
 	struct Product *ptr_stock = stock;
 
-	int menu = 0; //Option Menu
+	int menu = 1; //Option Menu
 	
 
 	// Print Option
@@ -39,9 +42,8 @@ int main()
 	printf("2. Receiving \n");
 	printf("3. Search\n");
 	printf("4. Show all product\n");
-	printf("5. Check Expiry date");
 
-	while(1){
+	while(menu != 0){
 		printf("Move to: ");
 		scanf("%d", &menu);
 
@@ -59,26 +61,18 @@ int main()
 			
 			// Search
 			case 3:
-				
+				searchMenu(ptr_stock);
 				break;
 		
 			// Show all product 
 			case 4:
-				checkProduct(ptr_stock);
-				break;
-			
-			// Check expiry date
-			case 5:
-				
-				break;
-			
-			case 6:
-
+				countStock(ptr_stock);
 				break;
 		}
-
-	return 0;
+		printf("0 to quit, 1 to keep");
+		scanf("%d", &menu);
 	}
+	return 0;
 }
 
 
@@ -112,8 +106,11 @@ void registerProduct(struct Product *ptr)
 		scanf("%d", ptr->for_adult);
 	
 		printf("Price: ");
-	   	scanf("%d", ptr->product_price);
+	   	scanf("%d", &ptr->product_price);
 		
+		ptr->stock_count += 10;
+		balance -= ((ptr->product_price * 0.3) * 10);
+
 		printf("Press '0' to quit(1 to continue)\n");
 		scanf("%d", &is_continue);
 	}
@@ -144,7 +141,7 @@ void receiving(struct Product *ptr, int balance)
 				ptr->stock_count += addition;
 
 				//pay
-				balance = balance - ((ptr->product_price - ptr->product_price * 0.7) * addition);
+				balance = balance - ((ptr->product_price * 0.3) * addition);
 				printf("Current balance: %d", balance);	
 				break;
 			}
@@ -181,24 +178,26 @@ void searchMenu(struct Product* ptr) {
 
 }
 
+// Search product by name
 void searchByName(struct Product* ptr) {
-	char sName[30] = { '/0', };
+	char sName[30] = {"/0"};
 
 	printf("Product name : ");
 	fgets(sName, strlen(sName), stdin);
 
 	for (int i = 0; i < 50; ++i) {
-		if (!strcmp(sName, ptr[i]->pName)) {
-			printf("%s", ptr[i]->pName);
-			printf("This product made from %s", ptr[i]->pMaker);
-			printf("price: %d \n", ptr[i]->product_price);
-			printf("Expiry Date: %s", ptr[i]->exDate);
-			printf("Now available %d ea", ptr[i]->stock_count);
+		if (!strcmp(sName, ptr[i].pName)) {
+			printf("%s", ptr[i].pName);
+			printf("This product made from %s", ptr[i].pMaker);
+			printf("price: %d \n", ptr[i].product_price);
+			printf("Expiry Date: %s", ptr[i].exDate);
+			printf("Now available %d ea", ptr[i].stock_count);
 			break;
 		}
 	}
 }
 
+// Search product by product ID
 void searchByID(struct Product* ptr) {
 	int sID = 0;
 
@@ -206,18 +205,19 @@ void searchByID(struct Product* ptr) {
 	scanf("%d", &sID);
 
 	for (int i = 0; i < 50; ++i) {
-		if (sID == ptr[i]->pID) {
-			printf("%s", ptr[i]->pName);
-			printf("This product made from %s", ptr[i]->pMaker);
-			printf("price: %d \n", ptr[i]->product_price);
-			printf("Expiry Date: %s", ptr[i]->exDate);
-			printf("Now available %d ea", ptr[i]->stock_count);
+		if (sID == ptr[i].pID) {
+			printf("%s", ptr[i].pName);
+			printf("This product made from %s", ptr[i].pMaker);
+			printf("price: %d \n", ptr[i].product_price);
+			printf("Expiry Date: %s", ptr[i].exDate);
+			printf("Now available %d ea", ptr[i].stock_count);
 			break;
 		}
 	}
 }
 
-void checkProduct(struct Product *ptr)
+// Print stock
+void countStock(struct Product *ptr)
 {
 	for (int i = 0; i < 50; ++i) {
 		printf("%s : ", ptr->pName);
@@ -227,8 +227,4 @@ void checkProduct(struct Product *ptr)
 		printf("\n");
 	}
 }
-/*
-void checkEpDate()
-{
 
-}
