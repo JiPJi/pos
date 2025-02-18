@@ -106,7 +106,7 @@ void registerProduct(struct Product *ptr)
 		scanf("%d", ptr->for_adult);
 	
 		printf("Price: ");
-	   	scanf("%d", &ptr->product_price);
+	   	scanf("%d", ptr->product_price);
 		
 		ptr->stock_count += 10;
 		balance -= ((ptr->product_price * 0.3) * 10);

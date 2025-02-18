@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <termios.h> //terminal os header file for get password
-#include <unistd.h>
+//#include <termios.h> //terminal os header file for get password
+//#include <unistd.h>
 #include <time.h>
 
 struct User{

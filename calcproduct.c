@@ -9,9 +9,10 @@
 
 extern struct Product stock[50];
 extern struct Product *ptr_stock;
+extern int balance;
 
 void printallproduct(struct Product*); // print all product
-void chooseproduct(struct Product*); // user can choose product in this func
+void chooseproduct(struct Product*, struct Product*); // user can choose product in this func
 int printshopcart(struct Product*); // Print element of shopping cart & total
 int checkadult(); // check user is qualified
 int checkfresh(char[9]); // check Today is before than Expriry Date
@@ -37,7 +38,7 @@ void printallproduct(struct Product *ptr)
 void chooseproduct(struct Product *ptr, struct Product *ptr_cart)
 {
 	struct Product shoppingCart[20] = {0, '0', '0', '0', false, 0, 0};
-	*ptr_cart = shoppingCart;
+	ptr_cart = shoppingCart;
 
 	// Get entered name of the product
 	printf("Please enter product name you want");
@@ -71,13 +72,13 @@ int printshopcart(struct Product *ptr)
 
 	for(int i = 0; i < 20; ++i)
 	{
-		if(ptr[i]->pID == 0)
+		if(ptr[i].pID == 0)
 		{
 			break;
 		}
 		else
 		{
-			printf("%s ", ptr[i]->pName);
+			printf("%s ", ptr[i].pName);
 			printf("%dea, %d won\n", ptr[i].stock_count, ptr[i].product_price * ptr[i].stock_count);
 			total += ptr[i].product_price * ptr[i].stock_count;
 		}
@@ -98,7 +99,7 @@ void payByCard(int total)
 
 	balance += total;
 
-	return balance;
+	//return balance;
 }	
 
 // Return change and add money to balance

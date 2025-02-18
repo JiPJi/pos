@@ -15,10 +15,11 @@ extern struct Product stock[50];
 extern struct Product *ptr_stock;
 
 void printallproduct(struct Product*); // Print all product
-void chooseproduct(struct Product*); // Can choose product in this
-int printShopCart(struct Product*); // Print element of shopping cart & total
+void chooseproduct(struct Product*, struct Product*); // Can choose product in this
+int printshopcart(struct Product*); // Print element of shopping cart & total
 int checkadult(); // Check user is qualified
 int checkfresh(char[9]); // Check Today is before than Expiry Date
-int payByCard(int); // Get card number and add money to balnce
-int payByCash(int); // Return change and add money to balance
+void payByCard(int); // Get card number and add money to balnce
+void payByCash(int); // Return change and add money to balance
+
 #endif

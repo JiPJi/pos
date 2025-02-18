@@ -10,7 +10,7 @@ extern struct Product stock[50];
 extern struct Product *ptr_stock;
 
 void calcEarnings(time_t); //(22) end time - start time
-void calcMenu();
+void calcMenu(int);
 void calc();
 
 int main()
@@ -30,13 +30,14 @@ int main()
 		printf("1. Calculate \n");
 		printf("2. Management \n");
 
-		switch(menu)
-		case 1:
-			calc();
-			break;
-		case 2:
-			system("./STOREMANAGER");
-			break;
+		switch (menu) {
+			case 1:
+				calc();
+				break;
+			case 2:
+				system("./STOREMANAGER");
+				break;
+		}
 	}
 
 	calcEarnings(startTime);
@@ -44,7 +45,7 @@ int main()
 	return 0;
 }
 
-void calMenu(int total)
+void calcMenu(int total)
 {
 	int menu = 0;
 	int pMenu = 0;
@@ -105,7 +106,7 @@ void calc()
 			}
 		} 
 		// Check expiry date
-		if(checkfresh(ptr_cart[i]->exDate) != 0)
+		if(checkfresh(ptr_cart[i].exDate) != 0)
 		{
 			for(int j = 0; j < sizeof(ptr_cart) - 1; ++j)
 			{
@@ -116,7 +117,7 @@ void calc()
 	}
 	
 	// Calculate total price
-	total = printshopcart(*ptr_stock);
+	total = printshopcart(ptr_stock);
 	calcMenu(total);
 
 }
