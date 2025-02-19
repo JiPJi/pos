@@ -18,26 +18,32 @@ int main()
 	// Try login
 	system("./LOGIN");
 
-	// Save the Start Time
+
 	time_t startTime = time(NULL);
 	struct tm sTm = *localtime(&startTime);
-	
-	int menu = 0;
+
+	int menu = 1;
 
 	while(menu != 0){
 		// Start Work
-		printf("Options \n\n");
+		printf("\nOptions \n\n");
 		printf("1. Calculate \n");
-		printf("2. Management \n");
+		printf("2. Management \n\n");
+		printf("Go to: ");
+
+		scanf("%d", &menu);
+		printf("\n");
 
 		switch (menu) {
 			case 1:
 				calc();
 				break;
 			case 2:
-				system("./STOREMANAGER");
+				workerMenu();
 				break;
 		}
+		printf("\nPress 0 to finish work : ");
+		scanf("%d", &menu);
 	}
 
 	calcEarnings(startTime);
@@ -137,7 +143,7 @@ void calcEarnings(time_t startTime)
 	printf("Now: %d-%d-%d %d-%d-%d\n", eTm.tm_year, eTm.tm_mon, eTm.tm_mday, 
 			eTm.tm_hour, eTm.tm_min, eTm.tm_sec);	
 	printf("Work is ended!\n");
-	printf("Today's work: %d min.\n", workMin);
-	printf("Today's earning: %d won.\n", workMin * 9200);
+	printf("Today's work: %d min.\n", -(workMin));
+	printf("Today's earning: %d won.\n", -(workMin) * 9200);
 
 }

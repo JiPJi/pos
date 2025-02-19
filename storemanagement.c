@@ -17,41 +17,39 @@ struct Product{
 */
 
 int balance = 1234000;
-struct Product stock[50] = { 0, '0', '0', '0', false, 0, 0};
+struct Product stock[50] = { 0, '\0', '\0', '\0', false, 0, 0};
 struct Product *ptr_stock = stock;
 
-
-void registerProduct(struct Product*); 
+void workerMenu();
+int registerProduct(struct Product*, int); 
 void receiving(struct Product*, int); // adding product 
 void searchMenu(struct Product*); // search product  
 void searchByName(struct Product*);
 void searchByID(struct Product*);
 void countStock(struct Product*); // print how many product do they have
 
-int main()
+void workerMenu()
 {
-	struct Product stock[50] = { 0, '0', '0', '0', false, 0, 0};
-	struct Product *ptr_stock = stock;
 
 	int menu = 1; //Option Menu
-	
-
-	// Print Option
-	printf("Option \n\n");
-	printf("1. Register product \n");
-	printf("2. Receiving \n");
-	printf("3. Search\n");
-	printf("4. Show all product\n");
+	int i = 0;
 
 	while(menu != 0){
-		printf("Move to: ");
+		// Print Option
+		printf("\nOption \n\n");
+		printf("1. Register product \n");
+		printf("2. Receiving \n");
+		printf("3. Search\n");
+		printf("4. Show all product\n\n");
+
+		printf("Go to: ");
 		scanf("%d", &menu);
 
 		switch(menu)
 		{	
 			// Register product
 			case 1:
-				registerProduct(ptr_stock);
+				i = registerProduct(ptr_stock, i);
 				break;
 			
 			// Product Receiving
@@ -69,53 +67,63 @@ int main()
 				countStock(ptr_stock);
 				break;
 		}
-		printf("0 to quit, 1 to keep");
+		printf("\n Press 1 to go back to worker menu \n");
+		printf("(0 to quit from worker menu): ");
 		scanf("%d", &menu);
 	}
-	return 0;
 }
 
 
-void registerProduct(struct Product *ptr) 
+int registerProduct(struct Product *ptr, int i) 
 {
 	int is_continue = 1;
+	printf("%d\n", i);
 
 	if(ptr->pID == 0)
 	{
-		printf("First Addition");
+		printf("First Addition\n\n");
 	}
-	
-	while(is_continue != 0)
-	{
-		++ptr->pID;
 
-		printf("Name: "); fgets(ptr->pName, 
-				strlen(ptr->pName), stdin);
-		ptr->pName[strlen(ptr->pName)-1] = '\0';
+	while(is_continue != 0)
+	{	
+		// Remove blank characters
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
 		
-		printf("Maker: "); fgets(ptr->pMaker, 
-				strlen(ptr->pMaker), stdin);
-		ptr->pMaker[strlen(ptr->pMaker)-1] = '\0';
 		
-		printf("Expirement Date: "); fgets(ptr->exDate, 
-				strlen(ptr->exDate), stdin);
-		ptr->exDate[strlen(ptr->exDate)-1] = '\0';
+		ptr[i].pID = i + 1;
+
+		printf("Name: "); fgets(ptr[i].pName, 
+			30, stdin);
+		ptr[i].pName[strlen(ptr[i].pName)-1] = '\0';
+
+
+		printf("Maker: "); fgets(ptr[i].pMaker, 
+			30, stdin);
+		ptr[i].pMaker[strlen(ptr[i].pMaker)-1] = '\0';
 		
+
+		printf("Expirement Date: "); fgets(ptr[i].exDate, 
+			9, stdin);
+		ptr[i].exDate[strlen(ptr[i].exDate)-1] = '\0';
+
 		printf("Is this product only for over 18 years old?\n");
 		printf("Press 1 to Yes, Press 0 to No: ");
-		scanf("%d", ptr->for_adult);
+		scanf("%d", &ptr[i].for_adult);
 	
 		printf("Price: ");
-	   	scanf("%d", ptr->product_price);
+		scanf("%d", &ptr[i].product_price);
 		
-		ptr->stock_count += 10;
-		balance -= ((ptr->product_price * 0.3) * 10);
+		ptr[i].stock_count += 10;
+		balance -= ((ptr[i].product_price * 0.3) * 10);
 
-		printf("Press '0' to quit(1 to continue)\n");
+		printf("Press '0' to quit(1 to continue): ");
 		scanf("%d", &is_continue);
+	
+		++i;	
 	}
-
 	//수정할 물품 번호 받아서 번호로 찾아가서 수정?? 
+	return i;
 }
 
 void receiving(struct Product *ptr, int balance)
@@ -220,11 +228,13 @@ void searchByID(struct Product* ptr) {
 void countStock(struct Product *ptr)
 {
 	for (int i = 0; i < 50; ++i) {
-		printf("%s : ", ptr->pName);
-		for (int j = 0; j < ptr->stock_count; ++j) {
-			printf("*");
+		if(ptr[i].pName[0] != '\0'){
+			printf("%s : ", ptr[i].pName);
+			for (int j = 0; j < ptr[i].stock_count; ++j) {
+				printf("*");
+			}
+			printf(" (%dea)\n", ptr[i].stock_count);
 		}
-		printf("\n");
 	}
 }
 

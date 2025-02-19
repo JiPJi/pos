@@ -113,11 +113,11 @@ void payByCash(int total)
 	
 	while(1){
 		printf("How many 50,000 papers do you have?: ");
-		scanf("%d", bill50);
+		scanf("%d", &bill50);
 		printf("How many 10,000 papers do you have?: ");
-		scanf("%d", bill10);
+		scanf("%d", &bill10);
 		printf("How many 1,000 papers do you have?: ");
-		scanf("%d", bill1);
+		scanf("%d", &bill1);
 
 		change = (50000 * bill50) + (10000 * bill10) + (1000 * bill1) - total;
 	
