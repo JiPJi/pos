@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
 //#include <termios.h> //terminal os header file for get password
 //#include <unistd.h>
 #include <time.h>
+//#pragma warning(disable:4996)
 
 struct User{
 	char userid[20]; // user id

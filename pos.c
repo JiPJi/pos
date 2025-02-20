@@ -2,50 +2,60 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
 #include "stock.h"
+//#pragma warning(disable:4996)
 
 extern int balance;
 extern struct Product stock[50];
 extern struct Product *ptr_stock;
+extern struct Product shoppingCart[20];
+extern struct Product* ptr_cart;
 
 void calcEarnings(time_t); //(22) end time - start time
 void calcMenu(int);
-void calc();
+//void calculate();
+int checkadult(); // check user is qualified
+int checkfresh(int); // check Today is before than Expriry Date
 
 int main()
 {
 	// Try login
-	system("./LOGIN");
+	// system("./LOGIN");
 
 
 	time_t startTime = time(NULL);
 	struct tm sTm = *localtime(&startTime);
 
 	int menu = 1;
+	int total = 0;
 
 	while(menu != 0){
 		// Start Work
 		printf("\nOptions \n\n");
 		printf("1. Calculate \n");
-		printf("2. Management \n\n");
+		printf("2. Management \n");
+		printf("0. Finish work. \n\n");
 		printf("Go to: ");
 
 		scanf("%d", &menu);
 		printf("\n");
 
-		switch (menu) {
-			case 1:
-				calc();
-				break;
-			case 2:
-				workerMenu();
-				break;
-		}
-		printf("\nPress 0 to finish work : ");
-		scanf("%d", &menu);
-	}
+		if (menu != 0) {
+			switch (menu) {
+				case 1:
+					total = calculate();
+					calcMenu(total);
+					break;
+				case 2:
+					workerMenu();
+					break;
+			}
+			printf("\nPress any key to continue.\n");
+			printf("(0 to quit): ");
 
+			scanf("%d", &menu);
+		}
+	}
 	calcEarnings(startTime);
 
 	return 0;
@@ -53,80 +63,28 @@ int main()
 
 void calcMenu(int total)
 {
-	int menu = 0;
-	int pMenu = 0;
+	int pMenu = 1;
 
-	printf("Options\n\n");
-	printf("1. Print all product\n");
-	printf("2. Start shopping\n");
-	scanf("%d", &menu);
+	while (pMenu != 0) {
+		printf("Pay options \n\n");
+		printf("1. Pay by card. \n");
+		printf("2. Pay by cash. \n");
+		scanf("%d", &pMenu);
 
-	switch(menu)
-	{
-		case 1:
-			printallproduct(ptr_stock);
-			break;
-		case 2:
-			calc();
-			printf("Pay options \n\n");
-			printf("1. Pay by card. \n");
-			printf("2. Pay by cash. \n");
-			scanf("%d", &pMenu);
-
-			switch(pMenu)
-			{
-				case 1:
-					payByCard(total);
-					break;
-				case 2:
-					payByCash(total);
-					break;
-				default:
-					break;
-			}
-			break;
-		default:
-			break;
-	}
-}
-
-void calc()
-{	
-	int total = 0;
-	struct Product *ptr_cart = NULL;
-	
-	// shopping
-	chooseproduct(ptr_stock, ptr_cart);
-
-	// Check is adult & expiry date
-	for(int i = 0; i < sizeof(ptr_cart); ++i)
-	{
-		if((ptr_cart->for_adult) != 0)
+		switch (pMenu)
 		{
-			if(checkadult() == 0)
-			{
-				for(int j = 0; j < sizeof(ptr_cart) - 1; ++j)
-				{
-					ptr_cart[j] = ptr_cart[j + 1];
-				}
-			}
-		} 
-		// Check expiry date
-		if(checkfresh(ptr_cart[i].exDate) != 0)
-		{
-			for(int j = 0; j < sizeof(ptr_cart) - 1; ++j)
-			{
-				ptr_cart[j] = ptr_cart[j + 1];
-			}
-
+			case 1:
+				payByCard(total);
+				return;
+			case 2:
+				payByCash(total);
+				return;
+			default:
+				printf("Invalid value.");
 		}
 	}
-	
-	// Calculate total price
-	total = printshopcart(ptr_stock);
-	calcMenu(total);
-
 }
+
 
 void calcEarnings(time_t startTime)
 {
