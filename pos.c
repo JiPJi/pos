@@ -20,7 +20,7 @@ int checkfresh(int); // check Today is before than Expriry Date
 int main()
 {
 	// Try login
-	// system("./LOGIN");
+	system("./LOGIN");
 
 
 	time_t startTime = time(NULL);
@@ -98,7 +98,7 @@ void calcEarnings(time_t startTime)
 
 	// print current time, how many times he/she worked
 	// and earnings for today
-	printf("Now: %d-%d-%d %d-%d-%d\n", eTm.tm_year, eTm.tm_mon, eTm.tm_mday, 
+	printf("Now: %d-%d-%d %d-%d-%d\n", eTm.tm_year + 1900, eTm.tm_mon + 1, eTm.tm_mday, 
 			eTm.tm_hour, eTm.tm_min, eTm.tm_sec);	
 	printf("Work is ended!\n");
 	printf("Today's work: %d min.\n", -(workMin));

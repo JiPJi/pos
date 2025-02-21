@@ -106,7 +106,7 @@ int printshopcart(struct Product *ptr)
 		}
 		else
 		{
-			printf("%s : ", ptr[i].pName);
+			printf("\n%s : ", ptr[i].pName);
 			printf("%dea, %d won\n", ptr[i].stock_count, ptr[i].product_price * ptr[i].stock_count);
 			total += ptr[i].product_price * ptr[i].stock_count;
 		}
@@ -189,8 +189,7 @@ int calculate()
 
 	// Check is adult & expiry date
 	while (i < stuffs && ptr_cart[i].pID != 0) {
-		printf("%d, %d\n",i , ptr_cart[i].exDate);
-
+	
 		// Check expiry date
 		if (checkfresh(ptr_cart[i].exDate) == 0)
 		{
@@ -229,7 +228,6 @@ int calculate()
 // check user is qualified
 int checkadult()
 {
-	printf("Adult Check!\n");
 	int bYear;
 
 	printf("Please enter your birth year(yyyymmdd)");
@@ -239,7 +237,7 @@ int checkadult()
 	//printf("Please enter your birth date(mm)
 	bYear = bYear / 100;
 	
-	if(bYear - 20250200 > 0){
+	if(bYear - 20250200 < 18){
 		return 1;
 	}else return 0;
 }
@@ -251,18 +249,15 @@ int checkfresh(int ex)
 
 	time_t now = time(NULL);
 	struct tm tm = *localtime(&now);
-	printf("%d\n", ex);
-
+	
 	int comNow = (((tm.tm_year + 1900) * 10000) + ((tm.tm_mon + 1) * 100) + tm.tm_mday);
 	
 	if(ex < comNow)
 	{
-		printf("now: %d exDate: %d\n", comNow, ex);
 		printf("Can't buy this ; Expiry date has passed.\n");
 		return 0;
 	}
 	else {
-		printf("You can buy this.\n");
 		return 1;
 	}
 }
